@@ -1,3 +1,15 @@
+# Session-based Interactive Map
+
+This fork is a modification of the original Interactive Foxhole Map, that allows groups to create a single session and plan & view the POI in a group setting.
+
+## Changes:
+* Added new UI in top-left to let the user type in a pass-phrase, to join a session.
+  The UI will show the name of the session if connected successfuly, and a Disconnect button.
+  If the session doesn't exist, a pop-up to create the session will show (form, "Session Name" text field, "Pass-phrase" text field, already filled in), and the session will be created with the existing client data.
+* Removed "Import" & "Export" buttons. Data will now be saved server-side.
+* Nice to have: Clients can set their preferred name somewhere in the UI. Other users should be able to see the other connected clients.
+
+---
 # Interactive Foxhole Map
 
 A comprehensive interactive map for [Foxhole](https://www.foxholegame.com/) using OpenLayers and the Official Foxhole API for live data.
