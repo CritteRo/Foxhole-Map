@@ -1,12 +1,13 @@
 {
 	"name": "foxhole-map",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
 		"build": "ng build",
 		"watch": "ng build --watch --configuration development",
-		"test": "ng test"
+		"test": "ng test",
+		"serve:ssr:foxhole-map": "node dist/foxhole-map/server/server.mjs"
 	},
 	"private": true,
 	"dependencies": {
@@ -18,9 +19,11 @@
 		"@angular/platform-browser": "^19.0.0",
 		"@angular/platform-browser-dynamic": "^19.0.0",
 		"@angular/router": "^19.0.0",
+		"@angular/ssr": "^19.2.15",
 		"@primeng/themes": "^19.0.5",
 		"@turf/turf": "^7.2.0",
 		"@types/proj4": "^2.5.5",
+		"express": "^4.18.2",
 		"ol": "^10.3.1",
 		"ol-layerswitcher": "^4.1.2",
 		"primeicons": "^7.0.0",
@@ -35,6 +38,7 @@
 		"@angular-devkit/build-angular": "^19.0.4",
 		"@angular/cli": "^19.0.4",
 		"@angular/compiler-cli": "^19.0.0",
+		"@types/express": "^4.17.17",
 		"@types/jasmine": "~5.1.0",
 		"autoprefixer": "^10.4.20",
 		"jasmine-core": "~5.4.0",
