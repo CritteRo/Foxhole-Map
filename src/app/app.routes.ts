@@ -1,9 +1,13 @@
-import { Routes } from '@angular/router';
-import {MapComponent} from './map/map.component';
+import { Routes } from "@angular/router";
+import { MapComponent } from "./map/map.component";
 
 export const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: MapComponent,
-  }
+  },
+  {
+    path: "**",
+    redirectTo: "",
+  },
 ];

@@ -1,14 +1,12 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import { Component, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   imports: [RouterOutlet, FormsModule],
-  templateUrl: './app.component.html',
+  templateUrl: "./app.component.html",
   standalone: true,
-  styleUrl: './app.component.css'
+  styleUrl: "./app.component.css",
 })
-export class AppComponent {
-
-}
+export class AppComponent {}
