@@ -5,60 +5,66 @@ import {
   writeResponseToNodeResponse,
 } from "@angular/ssr/node";
 import express from "express";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const browserDistFolder = join(import.meta.dirname, "../browser");
+export function app(): express.Express {
+  const server = express();
 
-const app = express();
-const angularApp = new AngularNodeAppEngine();
+  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
+  const browserDistFolder = resolve(serverDistFolder, "../browser");
 
-/**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
+  const indexHtmlPath = join(serverDistFolder, "index.server.html");
 
-/**
- * Serve static files from /browser
- */
-app.use(
-  express.static(browserDistFolder, {
-    maxAge: "1y",
-    index: false,
-    redirect: false,
-  }),
-);
+  const angularApp = new AngularNodeAppEngine();
 
-/**
- * Handle all other requests by rendering the Angular application.
- */
-app.use((req, res, next) => {
-  angularApp
-    .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
-    .catch(next);
-});
+  server.set("view engine", "html");
+  server.set("views", browserDistFolder);
 
-/**
- * Start the server if this module is the main entry point.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
- */
-if (isMainModule(import.meta.url)) {
-  const port = process.env["PORT"] || 4000;
-  app.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
+  server.get("/api/test", (req: express.Request, res: express.Response) => {
+    res.send({ message: "Hello from the API!" });
   });
+
+  /**
+   * Serve static files from /browser
+   */
+  server.use(
+    express.static(browserDistFolder, {
+      maxAge: "1y",
+      index: false,
+      redirect: false,
+    }),
+  );
+
+  /**
+   * Handle all other requests by rendering the Angular application.
+   */
+  server.use((req, res, next) => {
+    angularApp
+      .handle(req)
+      .then((response) =>
+        response ? writeResponseToNodeResponse(response, res) : next(),
+      )
+      .catch(next);
+  });
+
+  /**
+   * Start the server if this module is the main entry point.
+   * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+   */
+  if (isMainModule(import.meta.url)) {
+    const port = process.env["PORT"] || 4000;
+    server.listen(port, () => {
+      console.log(`Node Express server listening on http://localhost:${port}`);
+    });
+  }
+
+  return server;
 }
 
 /**
  * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
  */
-export const reqHandler = createNodeRequestHandler(app);
+
+const server = app();
+export const reqHandler = createNodeRequestHandler(server);
